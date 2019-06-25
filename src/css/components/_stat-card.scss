@@ -135,6 +135,10 @@
                     font-weight: 800;
                 }
             }
+
+            &.hide {
+                display: none;
+            }
         }
     }
 }
