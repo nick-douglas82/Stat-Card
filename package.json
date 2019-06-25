@@ -11,7 +11,7 @@
         "type": "git",
         "url": "git+ssh://git@gitlab.com/chapmanio/base-js.git"
     },
-    "author": "Richard Chapman <richard@chapmanio.dev>",
+    "author": "Nick Douglas <nick.douglas82@gmail.com>",
     "license": "ISC",
     "bugs": {
         "url": "https://gitlab.com/chapmanio/base-js/issues"
