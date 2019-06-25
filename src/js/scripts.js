@@ -59,14 +59,31 @@ Object.keys(players).forEach(id => {
     select.add(opt, null);
 });
 
-function updatePlayerInfo(player) {
+const updatePlayerInfo = player => {
     const playerName = document.querySelector('.stat-card__player__name');
     const playerPosition = document.querySelector(
         '.stat-card__player__position'
     );
     playerName.innerHTML = player.name;
     playerPosition.innerHTML = player.position;
-}
+};
+
+const updatePlayerPhoto = player => {
+    const playerPhoto = document.querySelector(
+        '.stat-card__player-img .img-inner'
+    );
+
+    playerPhoto.style.backgroundImage = `url(./images/p${player}.png)`;
+};
+
+const updateClubBadge = player => {
+    const clubLogo = document.querySelector('.stat-card__club-logo');
+
+    clubLogo.classList.forEach(item => {
+        if (item.startsWith('club-')) clubLogo.classList.remove(item);
+    });
+    clubLogo.classList.add(`club-${player.team.id}`);
+};
 
 function updatePlayerStats(player) {
     const appearancesEl = document.querySelector('.appearances .stat');
@@ -94,4 +111,6 @@ select.addEventListener('change', e => {
     const player = players[e.target.value];
     updatePlayerInfo(player);
     updatePlayerStats(player);
+    updatePlayerPhoto(e.target.value);
+    updateClubBadge(player);
 });
