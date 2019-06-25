@@ -2,68 +2,96 @@ import playersData from './data/player-stats.json';
 
 function sortData(data) {
     const { players } = data;
-    return Object.keys(players).map((key, index) => {
-        const { player, stats } = players[key];
-        console.log(stats);
-        return {
-            [player.id]: {
-                name: `${player.name.first} ${player.name.last}`,
-                position: player.info.positionInfo,
-                team: {
-                    id: player.currentTeam.id,
-                    name: player.currentTeam.name,
-                },
-                stats: {},
+
+    const response = {};
+
+    players.forEach(p => {
+        const { player, stats } = p;
+
+        const goals = stats.find(s => s.name === 'goals');
+        const appearances = stats.find(s => s.name === 'appearances');
+        const goalsPerMatch = parseFloat(
+            (goals.value / appearances.value).toFixed(2)
+        );
+
+        const fPasses = stats.find(s => s.name === 'fwd_pass');
+        const bPasses = stats.find(s => s.name === 'backward_pass');
+        const totalPasses = fPasses.value + bPasses.value;
+        const minutesPlayed = stats.find(s => s.name === 'mins_played');
+        const passesPerMinute = parseFloat(
+            (totalPasses / minutesPlayed.value).toFixed(2)
+        );
+        const assists = stats.find(s => s.name === 'goal_assist');
+
+        response[player.id] = {
+            name: `${player.name.first} ${player.name.last}`,
+            position: player.info.positionInfo,
+            team: {
+                id: player.currentTeam.id,
+                name: player.currentTeam.name,
+            },
+            stats: {
+                goals: goals.value,
+                appearances: appearances.value,
+                goalsPerMatch,
+                passesPerMinute,
             },
         };
+
+        if (assists) {
+            response[player.id].stats.assists = assists.value;
+        }
     });
+
+    return response;
 }
 
-const data = sortData(playersData);
-console.log('data', data);
+const players = sortData(playersData);
+console.log('data', players);
 
-// console.log(players);
-// const select = document.querySelector('.select-list');
-// const playerName = document.querySelector('.stat-card__player__name');
-// const playerPosition = document.querySelector('.stat-card__player__position');
-// const stats = document.querySelector('.stat-card__stats__list');
+const select = document.querySelector('.select-list');
 
-// // Create drop down items
-// for (const id in players) {
-//     const opt = document.createElement('option');
-//     const { first, last } = players[id].player.name;
-//     opt.value = id;
-//     opt.text = `${first} ${last}`;
+// Create drop down items
+Object.keys(players).forEach(id => {
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.text = players[id].name;
+    select.add(opt, null);
+});
 
-//     select.add(opt, null);
-// }
+function updatePlayerInfo(player) {
+    const playerName = document.querySelector('.stat-card__player__name');
+    const playerPosition = document.querySelector(
+        '.stat-card__player__position'
+    );
+    playerName.innerHTML = player.name;
+    playerPosition.innerHTML = player.position;
+}
 
-// function updatePlayerInfo(player) {
-//     const { first, last } = player.player.name;
-//     const { positionInfo } = player.player.info;
-//     playerName.innerHTML = `${first} ${last}`;
-//     playerPosition.innerHTML = `${positionInfo}`;
-// }
+function updatePlayerStats(player) {
+    const appearancesEl = document.querySelector('.appearances .stat');
+    const goalsEl = document.querySelector('.goals .stat');
+    const assistsEl = document.querySelector('.assists .stat');
+    const goalsPerMatchEl = document.querySelector('.goals_match .stat');
+    const passesPerMinuteEl = document.querySelector('.passes_minute .stat');
 
-// function updatePlayerStats(player) {
-//     console.log(player.stats);
-//     for (const id in player.stats) {
-//         if (
-//             player.stats[id].name === 'goals' ||
-//             player.stats[id].name === 'appearances' ||
-//             player.stats[id].name === 'goal_assist'
-//         ) {
-//             const li = document.createElement('li');
-//             stats.appendChild(li);
-//             li.classList.add('stat-card__stats__item');
-//             li.innerHTML = `<span>${player.stats[id].name}</span>
-//                         <span>${player.stats[id].value}</span>`;
-//         }
-//     }
-// }
+    const {
+        appearances,
+        goals,
+        assists,
+        goalsPerMatch,
+        passesPerMinute,
+    } = player.stats;
 
-// select.addEventListener('change', e => {
-//     const player = players[e.target.value];
-//     updatePlayerInfo(player);
-//     updatePlayerStats(player);
-// });
+    appearancesEl.innerHTML = appearances;
+    goalsEl.innerHTML = goals;
+    assistsEl.innerHTML = assists;
+    goalsPerMatchEl.innerHTML = goalsPerMatch;
+    passesPerMinuteEl.innerHTML = passesPerMinute;
+}
+
+select.addEventListener('change', e => {
+    const player = players[e.target.value];
+    updatePlayerInfo(player);
+    updatePlayerStats(player);
+});
