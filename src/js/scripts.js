@@ -59,58 +59,80 @@ Object.keys(players).forEach(id => {
     select.add(opt, null);
 });
 
-const updatePlayerInfo = player => {
+const updatePlayerInfo = id => {
     const playerName = document.querySelector('.stat-card__player__name');
     const playerPosition = document.querySelector(
         '.stat-card__player__position'
     );
-    playerName.innerHTML = player.name;
-    playerPosition.innerHTML = player.position;
+
+    if (id !== '0') {
+        playerName.innerHTML = players[id].name;
+        playerPosition.innerHTML = players[id].position;
+    } else {
+        playerName.innerHTML = 'Player Name';
+        playerPosition.innerHTML = 'Player Position';
+    }
 };
 
-const updatePlayerPhoto = player => {
+const updatePlayerPhoto = id => {
     const playerPhoto = document.querySelector(
         '.stat-card__player-img .img-inner'
     );
 
-    playerPhoto.style.backgroundImage = `url(./images/p${player}.png)`;
+    if (id !== '0') {
+        playerPhoto.style.backgroundImage = `url(./images/p${id}.png)`;
+    } else {
+        playerPhoto.style.backgroundImage = `url()`;
+    }
 };
 
-const updateClubBadge = player => {
+const updateClubBadge = id => {
     const clubLogo = document.querySelector('.stat-card__club-logo');
 
     clubLogo.classList.forEach(item => {
         if (item.startsWith('club-')) clubLogo.classList.remove(item);
     });
-    clubLogo.classList.add(`club-${player.team.id}`);
+
+    if (id !== '0') {
+        clubLogo.classList.add(`club-${players[id].team.id}`);
+    } else {
+        clubLogo.classList.add(`club-0`);
+    }
 };
 
-function updatePlayerStats(player) {
+function updatePlayerStats(id) {
     const appearancesEl = document.querySelector('.appearances .stat');
     const goalsEl = document.querySelector('.goals .stat');
     const assistsEl = document.querySelector('.assists .stat');
     const goalsPerMatchEl = document.querySelector('.goals_match .stat');
     const passesPerMinuteEl = document.querySelector('.passes_minute .stat');
 
-    const {
-        appearances,
-        goals,
-        assists,
-        goalsPerMatch,
-        passesPerMinute,
-    } = player.stats;
+    if (id !== '0') {
+        const {
+            appearances,
+            goals,
+            assists,
+            goalsPerMatch,
+            passesPerMinute,
+        } = players[id].stats;
 
-    appearancesEl.innerHTML = appearances;
-    goalsEl.innerHTML = goals;
-    assistsEl.innerHTML = assists;
-    goalsPerMatchEl.innerHTML = goalsPerMatch;
-    passesPerMinuteEl.innerHTML = passesPerMinute;
+        appearancesEl.innerHTML = appearances;
+        goalsEl.innerHTML = goals;
+        assistsEl.innerHTML = assists;
+        goalsPerMatchEl.innerHTML = goalsPerMatch;
+        passesPerMinuteEl.innerHTML = passesPerMinute;
+    } else {
+        appearancesEl.innerHTML = '0';
+        goalsEl.innerHTML = '0';
+        assistsEl.innerHTML = '0';
+        goalsPerMatchEl.innerHTML = '0.00';
+        passesPerMinuteEl.innerHTML = '0.00';
+    }
 }
 
 select.addEventListener('change', e => {
-    const player = players[e.target.value];
-    updatePlayerInfo(player);
-    updatePlayerStats(player);
+    updatePlayerInfo(e.target.value);
+    updatePlayerStats(e.target.value);
     updatePlayerPhoto(e.target.value);
-    updateClubBadge(player);
+    updateClubBadge(e.target.value);
 });
