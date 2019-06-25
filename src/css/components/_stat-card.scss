@@ -1,0 +1,128 @@
+.stat-card {
+    width: 100%;
+    max-width: 300px;
+
+    &__header {
+        background-color: $white;
+        padding: 1.4rem 1.6rem 2rem;
+    }
+
+    &__player-img {
+        height: 22.2rem;
+        padding: 0 1rem;
+        background-color: $white;
+        background-image: url(/images/background_pattern.png);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        position: relative;
+
+        .img-inner {
+            height: 100%;
+            width: 100%;
+            background-position: left;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+    }
+
+    &__info {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__club-logo {
+        width: 81px;
+        height: 81px;
+        background-color: $white;
+        border-radius: 50%;
+        transform: translateY(-37px);
+        position: absolute;
+        right: 1.6rem;
+        overflow: hidden;
+
+        .club-logo__inner {
+            width: 81px;
+            height: 81px;
+
+            background-image: url(/images/badges_sprite.png);
+            background-repeat: no-repeat;
+            display: block;
+            background-position: -350px -350px;
+            transform: scale(0.9);
+            background-size: 1190%;
+        }
+
+        &.club-26 {
+            .club-logo__inner {
+                background-position: 0 0;
+            }
+        }
+
+        &.club-1 {
+            .club-logo__inner {
+                background-position: -80px -80px;
+            }
+        }
+
+        &.club-11 {
+            .club-logo__inner {
+                background-position: -642px -562px;
+            }
+        }
+
+        &.club-12 {
+            .club-logo__inner {
+                background-position: -482px -642px;
+            }
+        }
+    }
+
+    &__player {
+        color: $white;
+        font-size: 2.2rem;
+        padding-bottom: 1.9rem;
+
+        &__name {
+            padding-bottom: 0.5rem;
+        }
+
+        &__position {
+            font-size: 1.6rem;
+        }
+    }
+
+    &__details {
+        background-color: $red;
+        padding: 2rem 1.6rem 1.6rem 1.6rem;
+    }
+
+    &__stats {
+        color: $text;
+        font-size: 1.6rem;
+
+        &__list {
+            padding-left: 0;
+            margin-left: 0;
+            list-style: none;
+        }
+
+        &__item {
+            background-color: $grey;
+            padding: 1.3rem 1.1rem;
+            letter-spacing: -0.01rem;
+            display: flex;
+            justify-content: space-between;
+
+            &:not(:last-of-type) {
+                margin-bottom: 0.2rem;
+            }
+
+            span {
+                &:nth-of-type(2) {
+                    font-weight: 800;
+                }
+            }
+        }
+    }
+}
