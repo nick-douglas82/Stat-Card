@@ -3,6 +3,9 @@
 Webpack, SCSS and JS (Babel transpiled).
 With ESLint, StyleLint and Prettier configuration.
 
+## Demo
+[Demo](https://player-stat-card.nick-douglas.co.uk/)
+
 ## Get started
 
 To install simply run:
